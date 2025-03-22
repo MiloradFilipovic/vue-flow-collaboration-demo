@@ -7,6 +7,8 @@ import { useCanvasStore } from '@/stores/canvas.store'
 import type { NodeType } from '../types/common'
 import { useUIStore } from '../stores/ui.store'
 import { useRoute } from 'vue-router'
+import * as Y from 'yjs'
+import { createYjsProvider } from '@y-sweet/client'
 
 const route = useRoute()
 
@@ -26,6 +28,13 @@ onMounted(() => {
   }
   canvasStore.createNewDiagram('Untitled', '1')
   currentDiagramId.value = canvasStore.currentDiagramId
+
+  // Init Yjs
+  const doc = new Y.Doc()
+  const docId = 'my-doc-id'
+  const authEndpoint = '/.netlify/functions/ysweet-auth'
+
+  createYjsProvider(doc, docId, authEndpoint)
 })
 
 const onNodeTypeSelected = (nodeType: NodeType) => {
